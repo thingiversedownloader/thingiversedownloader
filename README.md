@@ -6,11 +6,15 @@ Run with the following command line instructions:
 --newest = It takes the newest objects uploaded.
 
 --user=Downloads the object of a specified user.
+
 --likes=Downloads the likes of a specified user.
+
 --search=Downloads the objects that match the keywords. 12 objects per page Example: --search 'star wars'.
+
 --userlist=Loads users to download from specified file (1 per line).
 
 --pages=Defines the number of pages to be downloaded.
+
 --all=Download all the pages available (MAX 1000).
 
 Use one of each, all is optional, defaults to 1 page.
