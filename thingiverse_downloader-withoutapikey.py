@@ -53,7 +53,7 @@ def download_objects(rest_url, file_name):
     for n in data_pd:
         if (n=="error"):
             print("\n\nFound Error page, exiting current operation")
-            return True()
+            return True
 
     print("Downloading {} objects from thingiverse".format(len(data_pd)))
 
