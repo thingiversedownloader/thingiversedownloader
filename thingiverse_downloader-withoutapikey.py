@@ -41,7 +41,7 @@ def download_objects(rest_url, file_name):
     file.close()
 
     #Reading the json file
-    file=open(file_name,"r")
+    file=open(json_path+"/"+file_name,"r")
     data_pd=json.loads(file.read())
 
     #The page has objects?
