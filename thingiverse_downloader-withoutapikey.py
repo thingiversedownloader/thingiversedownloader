@@ -8,81 +8,25 @@ import os.path
 import re
 from collections import OrderedDict
 
-stl_path = "./stls"
-if not os.path.exists(stl_path):
-    os.makedirs(stl_path)
+#Go to https://www.thingiverse.com/apps/create and select Desktop app then either save it in the variable "api_token" below or save in apikey.txt in same folder
 
-thingiverse_api_base="https://api.thingiverse.com/"
-access_keyword="?access_token="
-api_token="insert api key here" #Go to https://www.thingiverse.com/apps/create and select Desktop app
+api_token="Insert API token here" 
 
-rest_keywords={"newest":"/newest","users":"/users/","likes":"/likes/","things":"/things/","files":"/files","search":"/search/","pages":"&page="}
 
-def newest(n_pages=1):
-    for index in range(n_pages):
-        print("\n\nPage: {}".format(index+1))
-        rest_url=thingiverse_api_base+rest_keywords["newest"]+access_keyword+api_token+rest_keywords["pages"]+str(n_pages)
-        download_objects(rest_url,"newest.json");
 
-def user(username,n_pages=1):
-    #/users/{$username}/things
-    for index in range(n_pages):
-        print("\n\nPage: {}".format(index+1))
-        rest_url=thingiverse_api_base+rest_keywords["users"]+username+rest_keywords["things"]+access_keyword+api_token+rest_keywords["pages"]+str(index+1)
-        print(rest_url)
-        if(download_objects(rest_url,str(username+".json"))==True):
-            return
 
-def likes(username,n_pages=1):
-    #/users/{$username}/things
-    for index in range(n_pages):
-        print("\n\nPage: {}".format(index+1))
-        rest_url=thingiverse_api_base+rest_keywords["users"]+username+rest_keywords["likes"]+access_keyword+api_token+rest_keywords["pages"]+str(index+1)
-        print(rest_url)
-        download_objects(rest_url,str(username+"_likes.json"));
-
-def search(keywords,n_pages=1):
-    #GET /search/{$term}/
-    for index in range(n_pages):
-        print("\n\nPage: {}".format(index+1))
-        rest_url=thingiverse_api_base+rest_keywords["search"]+keywords+access_keyword+api_token+rest_keywords["pages"]+str(index+1)
-        download_objects(rest_url,str(keywords+".json"))
-
-'''def parser_info(rest_url, file_name):
-    s = requests.Session() #It creates a session to speed up the downloads
-    r=s.get(rest_url)
-    data=r.json()
-
-    #Save the data
-    file=open(file_name,"wb")
-    file.write(json.dumps(data, indent=4, sort_keys=True,ensure_ascii=False).encode('utf8'))
-    file.close()
-
-    #Reading the json file
-    file=open(file_name,"r")
-    data_pd=json.loads(file.read())
-
-    #The page has objects?
-    if (len(data_pd)==0):
-        print("\n\nNo more pages- Finishing the program")
+def loadData(fileName,fileType):
+    #Load the data from the file to a list
+    if os.path.isfile(fileName):
+        file=open(fileName,"r")
+        loadedData = file.readlines()
+        file.close()
+        # Removing \n
+        loadedData = [x.strip() for x in loadedData]
+        return loadedData
+    else:
+        print(fileType + " file not Found at " + os.path.abspath(fileName))
         sys.exit()
-
-    #Is it an error page?
-    for n in data_pd:
-        if (n=="error"):
-            print("\n\nNo more pages- Finishing the program")
-            sys.exit()
-
-    print("Parsing data from {} objects from thingiverse".format(len(data_pd)))
-
-    for object in range(len(data_pd)):
-
-        object_id=str(data_pd[object]["id"])
-        print("\n{} -> {}".format(data_pd[object]["name"],data_pd[object]["public_url"]))
-
-        #Name and last name
-        print("Name: {} {}".format(data_pd[object]["creator"]["first_name"],data_pd[object]["creator"]["last_name"]))
-'''
 
 def download_objects(rest_url, file_name):
 
@@ -144,25 +88,68 @@ def download_objects(rest_url, file_name):
                 print("    "+files_info[file]["name"])
                 #Download the file
                 download_link=files_info[file]["download_url"]+access_keyword+api_token
-                r = s.get(download_link)
+                try:
+                    r = s.get(download_link)
+                except:
+                    print("Problem with download")
+                    errorList.append(str(download_link))
 
                 with open(file_path+"/"+files_info[file]["name"], "wb") as code:
                     code.write(r.content)
 
-def userlist(userlistfile):
-    #Load the data from the file to a list
-    if os.path.isfile(userlistfile):
-        file=open(userlistfile,"r")
-        userList = file.readlines()
-        file.close()
-        # Removing \n
-        userList = [x.strip() for x in userList]
-        for n in userList:
-            user(n,args.pages)
-    else:
-        print("Specified userlist file not found")
-        return
+def newest(n_pages=1):
+    for index in range(n_pages):
+        print("\n\nPage: {}".format(index+1))
+        rest_url=thingiverse_api_base+rest_keywords["newest"]+access_keyword+api_token+rest_keywords["pages"]+str(n_pages)
+        if(download_objects(rest_url,"newest.json")==True):
+            return
 
+def user(username,n_pages=1):
+    #/users/{$username}/things
+    for index in range(n_pages):
+        print("\n\nPage: {}".format(index+1))
+        rest_url=thingiverse_api_base+rest_keywords["users"]+username+rest_keywords["things"]+access_keyword+api_token+rest_keywords["pages"]+str(index+1)
+        print(rest_url)
+        if(download_objects(rest_url,str(username+".json"))==True):
+            return
+
+def likes(username,n_pages=1):
+    #/users/{$username}/things
+    for index in range(n_pages):
+        print("\n\nPage: {}".format(index+1))
+        rest_url=thingiverse_api_base+rest_keywords["users"]+username+rest_keywords["likes"]+access_keyword+api_token+rest_keywords["pages"]+str(index+1)
+        print(rest_url)
+        if(download_objects(rest_url,str(username+"_likes.json"))==True):
+            return
+
+def search(keywords,n_pages=1):
+    #GET /search/{$term}/
+    for index in range(n_pages):
+        print("\n\nPage: {}".format(index+1))
+        rest_url=thingiverse_api_base+rest_keywords["search"]+keywords+access_keyword+api_token+rest_keywords["pages"]+str(index+1)
+        if(download_objects(rest_url,str(keywords+".json"))==True):
+            return
+
+def userlist(userlistfile):
+    userList=loadData(userlistfile,"User list")
+    for n in userList:
+        user(n,args.pages)
+
+#Set the path for the STL's to go to. If it doesn't exist, create it.
+stl_path = "./stls"
+if not os.path.exists(stl_path):
+    os.makedirs(stl_path)
+
+rest_keywords={"newest":"/newest","users":"/users/","likes":"/likes/","things":"/things/","files":"/files","search":"/search/","pages":"&page="}
+thingiverse_api_base="https://api.thingiverse.com/"
+access_keyword="?access_token="
+
+#If the api_token hasn't been manually entered above, look for it in apikey.txt
+if api_token == "Insert API token here":
+    print("API key not entered into script, looking for it in apikey.txt")
+    api_token=loadData("apikey.txt","Api key")[0]
+
+errorList=["Errors occured when downloading the following:"]
 
 if __name__ == "__main__":
 
@@ -208,3 +195,7 @@ if __name__ == "__main__":
         search(args.keywords,args.pages)
     else:
         newest(1)
+        
+    if len(errorList) > 1:
+        for n in errorList:
+            print(n)
