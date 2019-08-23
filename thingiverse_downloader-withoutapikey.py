@@ -130,7 +130,10 @@ def search(keywords,n_pages=1):
             return
 
 def userlist(userlistfile):
+    #Read the user data to a list
     userList=loadData(userlistfile,"User list")
+    #Iterate the list and call the single user download 
+    #function for each user in the list
     for n in userList:
         user(n,args.pages)
 
@@ -142,6 +145,7 @@ if not os.path.exists(stl_path):
 if not os.path.exists(json_path):
     os.makedirs(json_path)
 
+#Boring stuff to make the code a bit more readable
 rest_keywords={"newest":"/newest","users":"/users/","likes":"/likes/","things":"/things/","files":"/files","search":"/search/","pages":"&page="}
 thingiverse_api_base="https://api.thingiverse.com/"
 access_keyword="?access_token="
@@ -151,6 +155,7 @@ if api_token == "Insert API token here":
     print("API key not entered into script, looking for it in apikey.txt")
     api_token=loadData("apikey.txt","Api key")[0]
 
+#Initialise the error list with the header
 errorList=["Errors occured when downloading the following:"]
 
 if __name__ == "__main__":
@@ -197,7 +202,9 @@ if __name__ == "__main__":
         search(args.keywords,args.pages)
     else:
         newest(1)
-        
+
+    #If the errorlist has more than just the heading in it,
+    #iterate through and print it all out
     if len(errorList) > 1:
         for n in errorList:
             print(n)
