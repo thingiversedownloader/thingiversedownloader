@@ -61,7 +61,6 @@ def download_objects(rest_url, file_name):
 
         object_id=str(data_pd[object]["id"])
         print("\n{} -> {}".format(data_pd[object]["name"],data_pd[object]["public_url"]))
-        # print("Object id: {}".format(object_id))
 
         thing_name = data_pd[object]["name"].replace("/","-").replace(":"," -").replace("\"","").replace("\"#","").replace("*","").replace("<","").replace(">","")
         thing_name = re.sub('[!@#$?.]', '', thing_name)
@@ -76,8 +75,6 @@ def download_objects(rest_url, file_name):
 
         #User name
         print("{} {}".format(data_pd[object]["creator"]["first_name"],data_pd[object]["creator"]["last_name"]))
-
-            # GET /things/{$id}/files/{$file_id}
 
         #Get file from a things
         r=s.get(thingiverse_api_base+rest_keywords["things"]+object_id+rest_keywords["files"]+access_keyword+api_token)
@@ -108,7 +105,7 @@ def user(username,n_pages=1):
     for index in range(n_pages):
         print("\n\nPage: {}".format(index+1))
         rest_url=thingiverse_api_base+rest_keywords["users"]+username+rest_keywords["things"]+access_keyword+api_token+rest_keywords["pages"]+str(index+1)
-        print(rest_url)
+        print(thingiverse_api_base+rest_keywords["users"]+username+rest_keywords["things"]+access_keyword+"Hiding API token"+rest_keywords["pages"]+str(index+1))
         if(download_objects(rest_url,str(username+".json"))==True):
             return
 
