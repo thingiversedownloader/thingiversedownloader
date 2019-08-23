@@ -33,3 +33,10 @@ To download the first page from a search for Star Wars:
     thingiverse_downloader_withoutapikey.py --search 'star wars'
     
 By default the first page is downloaded.  To change this, use --pages <number of pages to download> or --all.
+
+
+Future Ideas:
+ - Download the images from each thing so that reference images are with the STL's.
+ - Check the last downloaded date vs the current thing files incase updates were released.
+ 
+If anyone has the know how to do this, I'd love to see some code, as I'm at my limit of python knowledge without spending some decent time to sit down and figure it all out.
