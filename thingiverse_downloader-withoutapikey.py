@@ -36,7 +36,7 @@ def download_objects(rest_url, file_name):
     data=r.json()
 
     #Save the data
-    file=open(file_name,"wb")
+    file=open(json_path+"/"+file_name,"wb")
     file.write(json.dumps(data, indent=4, sort_keys=True,ensure_ascii=False).encode('utf8'))
     file.close()
 
@@ -66,7 +66,7 @@ def download_objects(rest_url, file_name):
         thing_name = data_pd[object]["name"].replace("/","-").replace(":"," -").replace("\"","").replace("\"#","").replace("*","").replace("<","").replace(">","")
         thing_name = re.sub('[!@#$?.]', '', thing_name)
         thing_name = re.sub("^\s+|\s+$", "", thing_name)
-        file_path = "./stls/"+data_pd[object]["creator"]["name"]+"/"+thing_name
+        file_path = stl_path+"/"+data_pd[object]["creator"]["name"]+"/"+thing_name
 
         if not os.path.exists(file_path):
             os.makedirs(file_path)
@@ -84,18 +84,17 @@ def download_objects(rest_url, file_name):
         files_info=r.json()
 
         for file in range(len(files_info)):
-            #if(files_info[file]["name"].find(".stl"))!=-1:
-                print("    "+files_info[file]["name"])
-                #Download the file
-                download_link=files_info[file]["download_url"]+access_keyword+api_token
-                try:
-                    r = s.get(download_link)
-                except:
-                    print("Problem with download")
-                    errorList.append(str(download_link))
+            print("    "+files_info[file]["name"])
+            #Download the file
+            download_link=files_info[file]["download_url"]+access_keyword+api_token
+            try:
+                r = s.get(download_link)
+            except:
+                print("Problem with download")
+                errorList.append(str(download_link))
 
-                with open(file_path+"/"+files_info[file]["name"], "wb") as code:
-                    code.write(r.content)
+            with open(file_path+"/"+files_info[file]["name"], "wb") as code:
+                code.write(r.content)
 
 def newest(n_pages=1):
     for index in range(n_pages):
@@ -137,8 +136,11 @@ def userlist(userlistfile):
 
 #Set the path for the STL's to go to. If it doesn't exist, create it.
 stl_path = "./stls"
+json_path = "./jsons"
 if not os.path.exists(stl_path):
     os.makedirs(stl_path)
+if not os.path.exists(json_path):
+    os.makedirs(json_path)
 
 rest_keywords={"newest":"/newest","users":"/users/","likes":"/likes/","things":"/things/","files":"/files","search":"/search/","pages":"&page="}
 thingiverse_api_base="https://api.thingiverse.com/"
