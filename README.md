@@ -13,11 +13,13 @@ Run with the following command line instructions:
 
 --userlist=Loads users to download from specified file (1 per line).
 
+The following are optional, pages defaults to 1, only use these if you're wanting more.
+
 --pages=Defines the number of pages to be downloaded.
 
 --all=Download all the pages available (MAX 1000).
 
-Use one of each, all is optional, defaults to 1 page.
+
 
 Examples: 
 
