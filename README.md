@@ -4,6 +4,7 @@ Download items from thingiverse using a script.  By various methods.
 Run with the following command line instructions:
 
 --newest = It takes the newest objects uploaded.
+
 --user=Downloads the object of a specified user.
 --likes=Downloads the likes of a specified user.
 --search=Downloads the objects that match the keywords. 12 objects per page Example: --search 'star wars'.
