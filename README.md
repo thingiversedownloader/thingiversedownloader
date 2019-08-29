@@ -32,7 +32,7 @@ To download the first page from all users in a line seperated list:
 To download the first page from a search for Star Wars:
     thingiverse_downloader_withoutapikey.py --search 'star wars'
     
-By default the first page is downloaded.  To change this, use --pages <number of pages to download> or --all.
+By default the first page is downloaded.  To change this, use --pages <number of pages to download> or --all TRUE.
 
 
 Future Ideas:
