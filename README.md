@@ -1,6 +1,8 @@
 # thingiversedownloader
 Download items from thingiverse using a script.  By various methods.
 
+You need to ensure the requests module is installed.  You can do this using pip or easy-install depending on what comes with your python install.
+
 Run with the following command line instructions:
 
 --newest = It takes the newest objects uploaded.
